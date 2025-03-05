@@ -66,12 +66,18 @@ class MainActivity : AppCompatActivity() {
 
         }.launchIn(lifecycleScope)
 
-        viewModel.events.onEach{ event ->
+        viewModel.events.onEach { event ->
             when (event) {
                 is MainEvent.MessageReceived -> addLog(event.message)
             }
 
         }.launchIn(lifecycleScope)
+    }
+
+    override fun onPause() {
+        viewModel.onDisconnectButtonClicked()
+        connectButton.isEnabled = true
+        super.onPause()
     }
 
     private fun setupButtonListeners() {
